@@ -1,0 +1,4 @@
+home_get:
+  path: /
+  controller: CoolDevGuys\Applications\Dashboard\Frontend\Controller\Home\HomeGetWebController
+  methods: [ GET ]

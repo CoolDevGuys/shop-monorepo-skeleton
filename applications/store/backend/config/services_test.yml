@@ -1,0 +1,12 @@
+framework:
+  test: true
+
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  CoolDevGuys\Tests\:
+    resource: '../../../../tests'
+
+  CoolDevGuys\Shared\Domain\Bus\Event\EventBus: '@CoolDevGuys\Shared\Infrastructure\Bus\Event\InMemory\InMemorySymfonyEventBus'

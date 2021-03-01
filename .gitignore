@@ -1,0 +1,12 @@
+/.env
+/.env.*.local
+
+/applications/*/*/var/
+
+/applications/*/*/build/
+!/applications/*/*/build/supervisor/.gitkeep
+
+/vendor/
+.phpunit.result.cache
+
+/build

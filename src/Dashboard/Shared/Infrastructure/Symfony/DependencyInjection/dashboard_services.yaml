@@ -1,0 +1,19 @@
+services:
+  # Databases
+  Doctrine\ORM\EntityManager:
+    factory: [ CoolDevGuys\Store\Shared\Infrastructure\Doctrine\DashboardEntityManagerFactory, create ]
+    arguments:
+      - driver: '%env(DASHBOARD_DATABASE_DRIVER)%'
+        host: '%env(DASHBOARD_DATABASE_HOST)%'
+        port: '%env(DASHBOARD_DATABASE_PORT)%'
+        dbname: '%env(DASHBOARD_DATABASE_NAME)%'
+        user: '%env(DASHBOARD_DATABASE_USER)%'
+        password: '%env(DASHBOARD_DATABASE_PASSWORD)%'
+      - '%env(APP_ENV)%'
+    tags:
+      - { name: cooldevguys.database_connection }
+    public: true
+
+
+  # Products
+  CoolDevGuys\Dashboard\Products\Domain\ProductRepository: '@CoolDevGuys\Dashboard\Products\Infrastructure\Persistence\DoctrineProductRepository'

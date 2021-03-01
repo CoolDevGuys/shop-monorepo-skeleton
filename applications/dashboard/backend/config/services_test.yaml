@@ -1,0 +1,13 @@
+framework:
+  test: true
+
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  CoolDevGuys\Tests\:
+    resource: '../../../../tests'
+
+  CoolDevGuys\Shared\Domain\RandomNumberGenerator: '@CoolDevGuys\Tests\Shared\Infrastructure\ConstantRandomNumberGenerator'
+#  CoolDevGuys\Shared\Domain\Bus\Event\EventBus: '@CoolDevGuys\Shared\Infrastructure\Bus\Event\InMemory\InMemorySymfonyEventBus'

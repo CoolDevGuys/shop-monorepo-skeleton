@@ -1,0 +1,19 @@
+services:
+  # Databases
+  Doctrine\ORM\EntityManager:
+    factory: [ CoolDevGuys\Store\Shared\Infrastructure\Doctrine\StoreEntityManagerFactory, create ]
+    arguments:
+      - driver: '%env(STORE_DATABASE_DRIVER)%'
+        host: '%env(STORE_DATABASE_HOST)%'
+        port: '%env(STORE_DATABASE_PORT)%'
+        dbname: '%env(STORE_DATABASE_NAME)%'
+        user: '%env(STORE_DATABASE_USER)%'
+        password: '%env(STORE_DATABASE_PASSWORD)%'
+      - '%env(APP_ENV)%'
+    tags:
+      - { name: cooldevguys.database_connection }
+    public: true
+
+
+  # Products
+  CoolDevGuys\Store\Products\Domain\ProductRepository: '@CoolDevGuys\Store\Products\Infrastructure\Persistence\DoctrineProductRepository'
