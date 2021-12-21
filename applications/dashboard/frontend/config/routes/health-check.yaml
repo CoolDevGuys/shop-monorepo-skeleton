@@ -1,4 +1,0 @@
-health-check_get:
-  path: /health-check
-  controller: CoolDevGuys\Applications\Dashboard\Frontend\Controller\HealthCheck\HealthCheckGetController
-  methods:  [GET]
