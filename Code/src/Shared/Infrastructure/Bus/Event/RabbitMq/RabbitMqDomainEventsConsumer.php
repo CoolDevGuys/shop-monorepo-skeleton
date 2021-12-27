@@ -14,21 +14,22 @@ use function Lambdish\Phunctional\get;
 
 final class RabbitMqDomainEventsConsumer
 {
-    private RabbitMqConnection          $connection;
+    private RabbitMqConnection $connection;
     private DomainEventJsonDeserializer $deserializer;
-    private string                      $exchangeName;
-    private int                         $maxRetries;
+    private string $exchangeName;
+    private int $maxRetries;
 
     public function __construct(
         RabbitMqConnection $connection,
         DomainEventJsonDeserializer $deserializer,
         string $exchangeName,
         int $maxRetries
-    ) {
-        $this->connection   = $connection;
+    )
+    {
+        $this->connection = $connection;
         $this->deserializer = $deserializer;
         $this->exchangeName = $exchangeName;
-        $this->maxRetries   = $maxRetries;
+        $this->maxRetries = $maxRetries;
     }
 
     public function consume(callable $subscriber, string $queueName): void
@@ -84,17 +85,18 @@ final class RabbitMqDomainEventsConsumer
     private function sendMessageTo(string $exchangeName, AMQPEnvelope $envelope, AMQPQueue $queue): void
     {
         $headers = $envelope->getHeaders();
+        $redeliveryCount = (int)get('redelivery_count', $headers, 0) + 1;
 
         $this->connection->exchange($exchangeName)->publish(
             $envelope->getBody(),
             $queue->getName(),
             AMQP_NOPARAM,
             [
-                'message_id'       => $envelope->getMessageId(),
-                'content_type'     => $envelope->getContentType(),
+                'message_id' => $envelope->getMessageId(),
+                'content_type' => $envelope->getContentType(),
                 'content_encoding' => $envelope->getContentEncoding(),
-                'priority'         => $envelope->getPriority(),
-                'headers'          => assoc($headers, 'redelivery_count', get('redelivery_count', $headers, 0) + 1),
+                'priority' => $envelope->getPriority(),
+                'headers' => assoc($headers, 'redelivery_count', (string)$redeliveryCount),
             ]
         );
     }

@@ -1,0 +1,208 @@
+openapi: 3.0.3
+
+info:
+  description: "Cooldevguys Shop API"
+  version: "1.0.0"
+  title: "Amazing generic Shop API"
+
+servers:
+  - url: '{environment}'
+    description: API server
+    variables:
+      environment:
+        enum:
+          - 'http://localhost:8001'
+          - 'https://api.cooldevguys.com'
+          - 'https://dev.cooldevguys.com'
+        default: 'http://localhost:8001'
+        description: Environment
+
+tags:
+  - name: "Shop"
+  - name: "Dashboard"
+  - name: "auth"
+  - name: "health-check"
+  - name: "marketing"
+  - name: "suggestions"
+
+paths:
+  /auth:
+    post:
+      tags:
+        - "shop"
+        - "dashboard"
+        - "auth"
+      summary: "Authenticate an user, returning a JWT"
+      operationId: auth
+      requestBody:
+        description: Credentials object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "user@coolshop"
+                password:
+                  type: string
+                  example: "aSecr3tPassw0rd"
+      responses:
+        "200":
+          description: Successfully authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2Mzk0ODEyODMsImV4cCI6MTYzOTQ4NDg4Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiY2xpZW50QG1lZGltb3BzIn0.wN4qHcipslg92EUNKFZdSAUqN9Fw_X8F7Xp-sNj4_CoQxor9sq6aER0MQKKegYhwyFjqylrI7hYwhWJpGiW7wcUskOcOklLV5sDJK7FL-dQmnYBhU8xH7v0gbxORjtDHpfm1Uy2aFCYUt7kHMLBqbRHbdymAp4vGY38F9CBGlx83y7yMt4G8cjMn1sjux4qcibJ-H9JZs4tCB0BKCvwvNc3gy_cosksi0W4mL4OhC07KIofim5Cxh3pbrBHGWiVn7jc67WKElEp3U31y55Z-fhYZ2e_Qi-c5D9b-Y8XyWCJn_GjqEFSOR12wsimnscHUZKITRPfyWAcvYhEmmuEN0A"
+        "400":
+          $ref: '#/components/responses/400BadRequest'
+        "401":
+          $ref: '#/components/responses/401Unauthorized'
+
+  /health-check:
+    get:
+      tags:
+        - "shop"
+        - "dashboard"
+        - "health-check"
+      summary: "Check if the application is healthy"
+      operationId: "healthCheck"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+        "500":
+          $ref: "#/components/responses/500Error"
+
+  /health-check/details:
+    get:
+      tags:
+        - "shop"
+        - "dashboard"
+        - "health-check"
+      summary: "Return a detailed info about the application's health"
+      operationId: "healthCheckDetail"
+      responses:
+        "200":
+          description: "Application is healthy"
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: '#/components/responses/401Unauthorized'
+        "500":
+          description: "Application not healthy"
+          content:
+            application/json:
+              schema:
+                type: object
+
+components:
+  responses:
+    401Unauthorized:
+      description: "The user is not authenticated"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/errorResponse'
+              - properties:
+                  status:
+                    type: string
+                    example: 401
+                  title:
+                    type: string
+                    example: "Unauthenticated user"
+                  detail:
+                    type: string
+                    example: "The user has not logged in"
+    400BadRequest:
+      description: "The request is wrong"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/errorResponse'
+              - properties:
+                  status:
+                    type: string
+                    example: 400
+                  title:
+                    type: string
+                    example: "Wrong request"
+                  detail:
+                    type: string
+                    example: "There is something wrong with the request"
+    500Error:
+      description: "Internal server error"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorResponse'
+
+  schemas:
+    apiResponse:
+      type: object
+      required:
+        - links
+        - data
+        - meta
+      properties:
+        links:
+          type: object
+          nullable: true
+          properties:
+            self:
+              type: string
+              example: "https://example.com/articles"
+            next:
+              type: string
+              example: "https://example.com/articles?page[offset]=2"
+            last:
+              type: string
+              example: "https://example.com/articles?page[offset]=10"
+        data:
+          type: array
+        meta:
+          type: array
+          nullable: true
+    errorResponse:
+      type: object
+      required:
+        - status
+        - code
+        - title
+        - detail
+      properties:
+        status:
+          type: string
+          description: "The HTTP status code applicable to this problem, expressed as a string value"
+          example: 500
+        code:
+          type: string
+          description: "An application-specific error code, expressed as a string value"
+          example: "ERR123"
+        title:
+          type: string
+          description: "A short, human-readable summary of the problem that SHOULD NOT change from occurrence
+          to occurrence of the problem, except for purposes of localization"
+          example: "Server error"
+        detail:
+          type: string
+          description: "A human-readable explanation specific to this occurrence of the problem"
+          example: "There was an error with the server connection"
+        meta:
+          type: array
+          description: "Meta information, in development environment it contains the exception stack trace"

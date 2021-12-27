@@ -1,7 +1,7 @@
 services:
   # Databases
   Doctrine\ORM\EntityManager:
-    factory: [ CoolDevGuys\Store\Shared\Infrastructure\Doctrine\StoreEntityManagerFactory, create ]
+    factory: [ CoolDevGuys\Shop\Shared\Infrastructure\Doctrine\StoreEntityManagerFactory, create ]
     arguments:
       - driver: '%env(STORE_DATABASE_DRIVER)%'
         host: '%env(STORE_DATABASE_HOST)%'
@@ -16,4 +16,4 @@ services:
 
 
   # Products
-  CoolDevGuys\Store\Products\Domain\ProductRepository: '@CoolDevGuys\Store\Products\Infrastructure\Persistence\DoctrineProductRepository'
+  CoolDevGuys\Shop\Products\Domain\ProductRepository: '@CoolDevGuys\Shop\Products\Infrastructure\Persistence\DoctrineProductRepository'

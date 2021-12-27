@@ -34,7 +34,7 @@ final class Utils
 
     public static function jsonEncode(array $values): string
     {
-        return json_encode($values);
+        return (string)json_encode($values);
     }
 
     public static function jsonDecode(string $json): array
@@ -53,12 +53,17 @@ final class Utils
         return ctype_lower($text) ? $text : strtolower(preg_replace('/([^A-Z\s])([A-Z])/', "$1_$2", $text));
     }
 
+    public static function splitWords(string $text): string
+    {
+        return ctype_lower($text) ? $text : preg_replace('/([^A-Z\s])([A-Z])/', "$1 $2", $text);
+    }
+
     public static function toCamelCase(string $text): string
     {
         return lcfirst(str_replace('_', '', ucwords($text, '_')));
     }
 
-    public static function dot($array, $prepend = ''): array
+    public static function dot(array $array, string $prepend = ''): array
     {
         $results = [];
         foreach ($array as $key => $value) {
@@ -72,11 +77,11 @@ final class Utils
         return $results;
     }
 
-    public static function filesIn(string $path, $fileType): array
+    public static function filesIn(string $path, string $fileType): array
     {
         return filter(
             static fn(string $possibleModule) => strstr($possibleModule, $fileType),
-            scandir($path)
+            (array)scandir($path)
         );
     }
 
@@ -85,5 +90,14 @@ final class Utils
         $reflect = new ReflectionClass($object);
 
         return $reflect->getShortName();
+    }
+
+    public static function iterableToArray(iterable $iterable): array
+    {
+        if (is_array($iterable)) {
+            return $iterable;
+        }
+
+        return iterator_to_array($iterable);
     }
 }

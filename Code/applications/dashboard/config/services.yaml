@@ -1,5 +1,5 @@
 imports:
-  - { resource: ../../../../src/Dashboard/Shared/Infrastructure/Symfony/DependencyInjection/dashboard_services.yaml }
+  - { resource: ../../../src/Dashboard/Shared/Infrastructure/Symfony/DependencyInjection/dashboard_services.yaml }
 
 services:
   _defaults:
@@ -8,41 +8,49 @@ services:
 
   _instanceof:
     CoolDevGuys\Shared\Domain\Bus\Event\DomainEventSubscriber:
-      tags: ['cooldevguys.domain_event_subscriber']
+      tags: [ 'cooldevguys.domain_event_subscriber' ]
 
     CoolDevGuys\Shared\Domain\Bus\Command\CommandHandler:
-      tags: ['cooldevguys.command_handler']
+      tags: [ 'cooldevguys.command_handler' ]
 
     CoolDevGuys\Shared\Domain\Bus\Query\QueryHandler:
-      tags: ['cooldevguys.query_handler']
+      tags: [ 'cooldevguys.query_handler' ]
 
-  CoolDevGuys\Applications\Dashboard\Entrypoints\Controller\:
+  CoolDevGuys\Applications\Dashboard\Controller\:
     resource: '../entrypoints/Controller'
     tags: ['controller.service_arguments']
 
-  CoolDevGuys\Applications\Dashboard\Entrypoints\Command\:
+  CoolDevGuys\Applications\Dashboard\Command\:
     resource: '../entrypoints/Command'
     tags: ['console.command']
 
   CoolDevGuys\Shared\:
-    resource: '../../../../src/Shared'
+    resource: '../../../src/Shared'
 
   CoolDevGuys\Dashboard\:
-    resource: '../../../../src/Dashboard'
+    resource: '../../../src/Dashboard'
 
+  # -- Tagging --
   CoolDevGuys\Shared\Infrastructure\Bus\Event\InMemory\InMemorySymfonyEventBus:
-    arguments: [!tagged cooldevguys.domain_event_subscriber]
+    arguments: [ !tagged cooldevguys.domain_event_subscriber ]
     lazy: true
 
   CoolDevGuys\Shared\Infrastructure\Bus\Event\DomainEventMapping:
-    arguments: [!tagged cooldevguys.domain_event_subscriber]
+    arguments: [ !tagged cooldevguys.domain_event_subscriber ]
 
   CoolDevGuys\Shared\Infrastructure\Bus\Event\DomainEventSubscriberLocator:
-    arguments: [!tagged cooldevguys.domain_event_subscriber]
+    arguments: [ !tagged cooldevguys.domain_event_subscriber ]
 
   CoolDevGuys\Shared\Infrastructure\Doctrine\DatabaseConnections:
-    arguments: [!tagged cooldevguys.database_connection]
+    arguments: [ !tagged cooldevguys.database_connection ]
 
+  CoolDevGuys\Shared\Infrastructure\Bus\Command\InMemorySymfonyCommandBus:
+    arguments: [ !tagged cooldevguys.command_handler ]
+
+  CoolDevGuys\Shared\Infrastructure\Bus\Query\InMemorySymfonyQueryBus:
+    arguments: [ !tagged cooldevguys.query_handler ]
+
+  # -- Listeners --
   CoolDevGuys\Shared\Infrastructure\Symfony\AddJsonBodyToRequestListener:
     tags:
       - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
@@ -51,9 +59,12 @@ services:
     tags:
       - { name: kernel.event_listener, event: kernel.exception, method: onException }
 
-  CoolDevGuys\Shared\Infrastructure\Bus\Command\InMemorySymfonyCommandBus:
-    arguments: [!tagged cooldevguys.command_handler]
+  CoolDevGuys\Shared\Infrastructure\Symfony\ParseJsonApiResponseListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.view, method: onKernelView }
 
-  CoolDevGuys\Shared\Infrastructure\Bus\Query\InMemorySymfonyQueryBus:
-    arguments: [!tagged cooldevguys.query_handler]
+  CoolDevGuys\Shared\Infrastructure\Symfony\ApiRequestValidatorListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
 

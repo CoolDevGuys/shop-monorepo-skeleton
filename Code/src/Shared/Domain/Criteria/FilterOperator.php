@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Domain\Criteria;
 
+use CoolDevGuys\Shared\Domain\ValueObject\Enum;
+
 /**
  * @method static FilterOperator gt()
  * @method static FilterOperator lt()
@@ -29,7 +31,7 @@ final class FilterOperator extends Enum
         return in_array($this->value(), self::$containing, true);
     }
 
-    protected function throwExceptionForInvalidValue($value): void
+    protected function throwExceptionForInvalidValue(string $value): void
     {
         throw new \InvalidArgumentException(sprintf('The filter <%s> is invalid', $value));
     }

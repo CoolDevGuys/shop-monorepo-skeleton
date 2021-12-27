@@ -6,33 +6,27 @@ namespace CoolDevGuys\Shared\Infrastructure\Symfony;
 
 use CoolDevGuys\Shared\Domain\Bus\Command\CommandBus;
 use CoolDevGuys\Shared\Domain\Bus\Query\QueryBus;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Twig\Environment;
 
 abstract class WebController extends ApiController
 {
-    private Environment      $twig;
-    private RouterInterface  $router;
-    private SessionInterface $session;
-
     public function __construct(
-        Environment $twig,
-        RouterInterface $router,
-        SessionInterface $session,
+        private Environment $twig,
+        private RouterInterface $router,
+        private RequestStack $requestStack,
         QueryBus $queryBus,
         CommandBus $commandBus,
         ApiExceptionsHttpStatusCodeMapping $exceptionHandler
     ) {
         parent::__construct($queryBus, $commandBus, $exceptionHandler);
-
-        $this->twig    = $twig;
-        $this->router  = $router;
-        $this->session = $session;
     }
 
     public function render(string $templatePath, array $arguments = []): Response
@@ -76,7 +70,13 @@ abstract class WebController extends ApiController
     private function addFlashFor(string $prefix, array $messages): void
     {
         foreach ($messages as $key => $message) {
-            $this->session->getFlashBag()->set($prefix . '.' . $key, $message);
+            try {
+                $session = $this->requestStack->getSession();
+                if ($session instanceof Session) {
+                    $session->getFlashBag()->set($prefix . '.' . $key, $message);
+                }
+            } catch (SessionNotFoundException) {
+            }
         }
     }
 }

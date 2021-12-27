@@ -1,0 +1,18 @@
+includes:
+  - vendor/phpstan/phpstan-symfony/extension.neon
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+  level: 7
+  paths:
+    - %currentWorkingDirectory%/applications/dashboard
+    - %currentWorkingDirectory%/src/Dashboard
+  excludePaths:
+    - %currentWorkingDirectory%/applications/dashboard/var/*
+    - %currentWorkingDirectory%/applications/dashboard/tests/*
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  treatPhpDocTypesAsCertain: true
+  inferPrivatePropertyTypeFromConstructor: true
+  symfony:
+    console_application_loader: tests/console-dashboard.php

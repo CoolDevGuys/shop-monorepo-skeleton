@@ -9,7 +9,7 @@
         beStrictAboutChangesToGlobalState="true"
         beStrictAboutTestsThatDoNotTestAnything="false"
         beStrictAboutTodoAnnotatedTests="true"
-        bootstrap="./applications/bootstrap.php"
+        bootstrap="./tests/bootstrap.php"
         colors="true"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
@@ -29,8 +29,8 @@
     </php>
 
     <testsuites>
-        <testsuite name="store">
-            <directory>./tests/Store</directory>
+        <testsuite name="shop">
+            <directory>./tests/Shop</directory>
         </testsuite>
         <testsuite name="dashboard">
             <directory>./tests/Dashboard</directory>

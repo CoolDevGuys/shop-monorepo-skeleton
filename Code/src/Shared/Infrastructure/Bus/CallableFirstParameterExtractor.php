@@ -44,7 +44,7 @@ final class CallableFirstParameterExtractor
         return static fn($value) => [$value];
     }
 
-    public function extract($class): ?string
+    public function extract(callable|object $class): ?string
     {
         $reflector = new \ReflectionClass($class);
         $method = $reflector->getMethod('__invoke');

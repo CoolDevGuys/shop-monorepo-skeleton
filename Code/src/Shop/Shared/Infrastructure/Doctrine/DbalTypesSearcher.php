@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolDevGuys\Store\Shared\Infrastructure\Doctrine;
+namespace CoolDevGuys\Shop\Shared\Infrastructure\Doctrine;
 
 use CoolDevGuys\Shared\Domain\Utils;
 use function Lambdish\Phunctional\filter;
@@ -25,7 +25,7 @@ final class DbalTypesSearcher
     {
         return filter(
             static fn(string $possibleModule) => !in_array($possibleModule, ['.', '..']),
-            scandir($path)
+            (array)scandir($path)
         );
     }
 
@@ -49,7 +49,7 @@ final class DbalTypesSearcher
     private static function dbalClassesSearcher(string $contextName): callable
     {
         return static function (array $totalNamespaces, string $path) use ($contextName) {
-            $possibleFiles = scandir($path);
+            $possibleFiles = (array)scandir($path);
             $files         = filter(
                 static fn($file) => Utils::endsWith('Type.php', $file),
                 $possibleFiles

@@ -5,18 +5,27 @@ declare(strict_types=1);
 namespace CoolDevGuys\Shared\Infrastructure\Symfony;
 
 use CoolDevGuys\Shared\Domain\Utils;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 final class FlashSession
 {
     private static array $flashes = [];
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RequestStack $requestStack)
     {
-        self::$flashes = Utils::dot($session->getFlashBag()->all());
+        try {
+            $session = $requestStack->getSession();
+            if ($session instanceof Session) {
+                self::$flashes = Utils::dot($session->getFlashBag()->all());
+            }
+        } catch (SessionNotFoundException) {
+
+        }
     }
 
-    public function get(string $key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         if (array_key_exists($key, self::$flashes)) {
             return self::$flashes[$key];

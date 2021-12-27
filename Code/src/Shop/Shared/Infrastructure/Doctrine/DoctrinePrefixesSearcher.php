@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolDevGuys\Store\Shared\Infrastructure\Doctrine;
+namespace CoolDevGuys\Shop\Shared\Infrastructure\Doctrine;
 
 use function Lambdish\Phunctional\filter;
 use function Lambdish\Phunctional\map;
@@ -24,7 +24,7 @@ final class DoctrinePrefixesSearcher
     {
         return filter(
             static fn(string $possibleModule) => !in_array($possibleModule, ['.', '..']),
-            scandir($path)
+            (array)scandir($path)
         );
     }
 
@@ -45,7 +45,7 @@ final class DoctrinePrefixesSearcher
         return static fn(string $path) => !empty($path);
     }
 
-    private static function namespaceFormatter($baseNamespace): callable
+    private static function namespaceFormatter(string $baseNamespace): callable
     {
         return static fn(string $path, string $module) => "$baseNamespace\\$module\Domain";
     }

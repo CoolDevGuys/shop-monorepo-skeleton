@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Domain\ValueObject;
 
+use CoolDevGuys\Shared\Domain\Utils;
 use function Lambdish\Phunctional\reindex;
 
-abstract class Enum
+abstract class Enum implements \Stringable
 {
     protected static array $cache = [];
-    protected              $value;
 
-    public function __construct($value)
+    public function __construct(protected mixed $value)
     {
         $this->ensureIsBetweenAcceptedValues($value);
-
-        $this->value = $value;
     }
 
-    abstract protected function throwExceptionForInvalidValue($value);
+    abstract protected function throwExceptionForInvalidValue(string $value): void;
 
-    public static function __callStatic(string $name, $args)
+    public static function __callStatic(string $name, mixed $args): static
     {
         return new static(self::values()[$name]);
     }
@@ -35,14 +33,14 @@ abstract class Enum
         $class = static::class;
 
         if (!isset(self::$cache[$class])) {
-            $reflected           = new \ReflectionClass($class);
+            $reflected = new \ReflectionClass($class);
             self::$cache[$class] = reindex(self::keysFormatter(), $reflected->getConstants());
         }
 
         return self::$cache[$class];
     }
 
-    public static function randomValue()
+    public static function randomValue(): mixed
     {
         return self::values()[array_rand(self::values())];
     }
@@ -57,7 +55,7 @@ abstract class Enum
         return static fn($unused, string $key): string => Utils::toCamelCase(strtolower($key));
     }
 
-    public function value()
+    public function value(): mixed
     {
         return $this->value;
     }
@@ -69,13 +67,13 @@ abstract class Enum
 
     public function __toString(): string
     {
-        return (string) $this->value();
+        return (string)$this->value();
     }
 
-    private function ensureIsBetweenAcceptedValues($value): void
+    private function ensureIsBetweenAcceptedValues(mixed $value): void
     {
-        if (!in_array($value, static::values(), true)) {
-            $this->throwExceptionForInvalidValue($value);
+        if (!in_array((string)$value, static::values(), true)) {
+            $this->throwExceptionForInvalidValue((string)$value);
         }
     }
 }

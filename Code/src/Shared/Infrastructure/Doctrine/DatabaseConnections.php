@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Infrastructure\Doctrine;
 
+use CoolDevGuys\Shared\Domain\Utils;
+use CoolDevGuys\Tests\Shared\Infrastructure\Doctrine\MySqlDatabaseCleaner;
 use Doctrine\ORM\EntityManager;
 use function Lambdish\Phunctional\apply;
 use function Lambdish\Phunctional\each;
@@ -14,7 +16,7 @@ final class DatabaseConnections
 
     public function __construct(iterable $connections)
     {
-        $this->connections = iterator_to_array($connections);
+        $this->connections = Utils::iterableToArray($connections);
     }
 
     public function clear(): void

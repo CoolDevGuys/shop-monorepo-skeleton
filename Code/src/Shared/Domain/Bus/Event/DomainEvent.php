@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Domain\Bus\Event;
 
+use CoolDevGuys\Shared\Domain\Utils;
+use CoolDevGuys\Shared\Domain\ValueObject\Uuid;
+
 abstract class DomainEvent
 {
     private string $aggregateId;

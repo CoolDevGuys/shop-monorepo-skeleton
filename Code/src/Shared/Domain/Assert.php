@@ -13,7 +13,7 @@ final class Assert
         }
     }
 
-    public static function instanceOf($class, $item): void
+    public static function instanceOf(string $class, mixed $item): void
     {
         if (!$item instanceof $class) {
             throw new \InvalidArgumentException(

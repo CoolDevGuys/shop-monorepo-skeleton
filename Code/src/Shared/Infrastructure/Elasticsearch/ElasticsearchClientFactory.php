@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Elasticsearch\ClientBuilder;
+
 final class ElasticsearchClientFactory
 {
     public static function createClient(string $host): ElasticsearchClient

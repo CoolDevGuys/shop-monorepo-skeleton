@@ -4,42 +4,45 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Infrastructure\Symfony;
 
-use CoolDevGuys\Shared\Domain\DomainError;
-use CoolDevGuys\Shared\Domain\Utils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 final class ApiExceptionListener
 {
-    private ApiExceptionsHttpStatusCodeMapping $exceptionHandler;
 
-    public function __construct(ApiExceptionsHttpStatusCodeMapping $exceptionHandler)
+    public function __construct(private ApiExceptionsHttpStatusCodeMapping $exceptionHandler)
     {
-        $this->exceptionHandler = $exceptionHandler;
     }
 
     public function onException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
+        $errorResponse = ErrorJsonApiResponse::fromException($exception, $this->extractStatusCode($exception));
+
+        if (getenv('APP_DEBUG') === '1') {
+            $errorResponse->addMetaInformation([
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'trace' => explode("\n", $exception->getTraceAsString()),
+            ]);
+        }
 
         $event->setResponse(
             new JsonResponse(
-                [
-                    'code'    => $this->exceptionCodeFor($exception),
-                    'message' => $exception->getMessage(),
-                ],
-                $this->exceptionHandler->statusCodeFor(get_class($exception))
+                $errorResponse->toArray(),
+                $errorResponse->statusCode()
             )
         );
     }
 
-    private function exceptionCodeFor(Throwable $error): string
+    private function extractStatusCode(Throwable $exception): int
     {
-        $domainErrorClass = DomainError::class;
+        if ($exception instanceof HttpException) {
+            return $exception->getStatusCode();
+        }
 
-        return $error instanceof $domainErrorClass
-            ? $error->errorCode()
-            : Utils::toSnakeCase(Utils::extractClassName($error));
+        return $this->exceptionHandler->statusCodeFor(get_class($exception));
     }
 }

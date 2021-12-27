@@ -8,8 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use function dirname;
 
 final class ShopKernel extends Kernel
 {
@@ -22,6 +24,7 @@ final class ShopKernel extends Kernel
         $contents = require $this->getProjectDir() . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
+                /** @var BundleInterface $class */
                 yield new $class();
             }
         }
@@ -40,7 +43,7 @@ final class ShopKernel extends Kernel
 
         $loader->load($confDir . '/services' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/services_' . $this->environment . self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir . '/services/*' . self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . '/packages/*' . self::CONFIG_EXTS, 'glob');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void

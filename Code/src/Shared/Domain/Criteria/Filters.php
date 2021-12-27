@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Domain\Criteria;
 
+use CoolDevGuys\Shared\Domain\Collection;
+use function Lambdish\Phunctional\reduce;
+
 final class Filters extends Collection
 {
     public static function fromValues(array $values): self

@@ -12,13 +12,13 @@ if [ "$APP_ENV" = 'dev' ] || [ "$APP_ENV" = 'test' ]; then
     echo ">> [INFO] Wait for database up"
     /usr/local/bin/wait-for-it.sh -p "$SHOP_DATABASE_PORT" -h "$SHOP_DATABASE_HOST" -t 30 -s
     echo ">> [INFO] Waiting for RabbitMq..."
-    /usr/local/bin/wait-for-it.sh -p "$RABBITMQ_PORT" -h "$RABBITMQ_HOST" -t 30 -s
+#    /usr/local/bin/wait-for-it.sh -p "$RABBITMQ_PORT" -h "$RABBITMQ_HOST" -t 30 -s
 fi
 
 if [ "$APP_NAME" = 'shop' ]; then
 echo ">> [INFO] Run database migrations"
-php /Code/applications/shop/bin/migrations migrations:migrate --no-interaction
+#php /Code/applications/shop/bin/migrations migrations:migrate --no-interaction
 fi
 
 echo ">> [INFO] Configuring event queues"
-php /Code/applications/"$APP_NAME"/bin/console cooldevguys:domain-events:rabbitmq:configure
+#php /Code/applications/"$APP_NAME"/bin/console cooldevguys:domain-events:rabbitmq:configure

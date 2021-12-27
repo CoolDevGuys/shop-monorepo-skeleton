@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CoolDevGuys\Store\Shared\Infrastructure\Doctrine;
+namespace CoolDevGuys\Shop\Shared\Infrastructure\Doctrine;
 
 use CoolDevGuys\Shared\Infrastructure\Doctrine\DoctrineEntityManagerFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,11 +16,11 @@ final class StoreEntityManagerFactory
         $isDevMode = 'prod' !== $environment;
 
         $prefixes = array_merge(
-            DoctrinePrefixesSearcher::inPath(__DIR__ . '/../../../../Store', 'CoolDevGuys\Store'),
+            DoctrinePrefixesSearcher::inPath(__DIR__ . '/../../../../Shop', 'CoolDevGuys\Store'),
             DoctrinePrefixesSearcher::inPath(__DIR__ . '/../../../../Dashboard', 'CoolDevGuys\Dashboard')
         );
 
-        $dbalCustomTypesClasses = DbalTypesSearcher::inPath(__DIR__ . '/../../../../Store', 'Store');
+        $dbalCustomTypesClasses = DbalTypesSearcher::inPath(__DIR__ . '/../../../../Shop', 'Store');
 
         return DoctrineEntityManagerFactory::create(
             $parameters,

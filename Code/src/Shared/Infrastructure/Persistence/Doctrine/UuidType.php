@@ -32,9 +32,10 @@ abstract class UuidType extends StringType implements DoctrineCustomType
         return new $className($value);
     }
 
-    /** @var Uuid $value */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
+        /** @var Uuid $value */
         return $value->value();
     }
 }

@@ -23,7 +23,7 @@ final class RawSqlPaginator implements ResourcePaginator
         $this->sqlStatement = $query;
     }
 
-    public function currentPage()
+    public function currentPage(): int
     {
         return $this->currentPage;
     }
@@ -38,7 +38,7 @@ final class RawSqlPaginator implements ResourcePaginator
         $this->currentPage = $page;
     }
 
-    public function results()
+    public function results(): array
     {
         $limit = $this->maxPerPage ?? self::DEFAULT_MAX_PER_PAGE;
         $offset = (($this->currentPage ?? 1) * $limit) - $limit;
