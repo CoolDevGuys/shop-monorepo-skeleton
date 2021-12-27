@@ -1,0 +1,4 @@
+auth_post:
+  path: /auth
+  controller: CoolDevGuys\Applications\Dashboard\Controller\Auth\AuthPostController
+  methods:  POST

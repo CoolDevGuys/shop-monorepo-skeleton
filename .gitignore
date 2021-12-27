@@ -1,12 +1,10 @@
-/.env
-/.env.*.local
+.env.*
+!.env.*.dist
 
-/applications/*/*/var/
+/Code/applications/*/var/
+/Code/build
+/Code/vendor
 
-/applications/*/*/build/
-!/applications/*/*/build/supervisor/.gitkeep
-
-/vendor/
 .phpunit.result.cache
 
 /build

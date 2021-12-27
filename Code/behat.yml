@@ -1,0 +1,2 @@
+imports:
+  - applications/shop/tests/shop.yml
