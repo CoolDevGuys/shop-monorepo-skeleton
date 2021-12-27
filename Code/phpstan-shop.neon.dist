@@ -1,0 +1,23 @@
+includes:
+  - vendor/phpstan/phpstan-symfony/extension.neon
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+  level: 7
+  paths:
+    - %currentWorkingDirectory%/applications/shop
+    - %currentWorkingDirectory%/src/Shop
+    - %currentWorkingDirectory%/src/Shared
+  excludePaths:
+    - %currentWorkingDirectory%/applications/shop/var/*
+    - %currentWorkingDirectory%/applications/shop/tests/*
+  ignoreErrors:
+    - '#Unable to resolve the template type T in call to method#'
+    - '#\sexpects class-string(.*)#'
+    - '#Unsafe usage of new static\(\)#'
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  treatPhpDocTypesAsCertain: true
+  inferPrivatePropertyTypeFromConstructor: true
+  symfony:
+    console_application_loader: tests/console-shop.php

@@ -1,0 +1,73 @@
+{
+  "name": "cooldevguys/shop-monorepo-skeleton",
+  "license": "MIT",
+  "type": "project",
+  "description": "A cool shop php application template",
+  "require": {
+    "php": "8.0.* | 8.1.*",
+    "ext-amqp": "*",
+    "ext-apcu": "*",
+    "ext-json": "*",
+    "ext-zend-opcache": "*",
+    "ext-pdo": "*",
+    "symfony/framework-bundle": "^6.0",
+    "symfony/messenger": "^6.0",
+    "symfony/dotenv": "^6.0",
+    "symfony/yaml": "^5.4",
+    "symfony/validator": "^6.0",
+    "symfony/runtime": "^6.0",
+    "symfony/security-bundle": "^6.0",
+    "lambdish/phunctional": "^2.0",
+    "ramsey/uuid": "^3.9",
+    "doctrine/dbal": "^2.10",
+    "doctrine/orm": "^2.7",
+    "ocramius/proxy-manager": "2.14.x-dev",
+    "elasticsearch/elasticsearch": "^7.3",
+    "monolog/monolog": "^2.1",
+    "promphp/prometheus_client_php": "^2.0",
+    "laminas/laminas-zendframework-bridge": "^1.4",
+    "league/openapi-psr7-validator": "^0.16.4",
+    "symfony/psr-http-message-bridge": "^2.1",
+    "nyholm/psr7": "^1.4",
+    "lexik/jwt-authentication-bundle": "^2.14"
+  },
+  "require-dev": {
+    "ext-xdebug": "*",
+    "roave/security-advisories": "dev-latest",
+    "behat/behat": "^3.6",
+    "friends-of-behat/mink-extension": "^2.4",
+    "friends-of-behat/mink-browserkit-driver": "^1.5",
+    "friends-of-behat/symfony-extension": "^2.1",
+    "phpunit/phpunit": "^9.2",
+    "mockery/mockery": "^1.4",
+    "fakerphp/faker": "^1.10",
+    "symfony/error-handler": "^6.0",
+    "symfony/phpunit-bridge": "^6.0",
+    "symfony/debug-bundle": "^6.0",
+    "phpstan/phpstan": "^1.2",
+    "phpstan/phpstan-symfony": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoolDevGuys\\Applications\\Shop\\": "applications/shop/entrypoints",
+      "CoolDevGuys\\Applications\\Dashboard\\": "applications/dashboard/entrypoints",
+      "CoolDevGuys\\": [
+        "src"
+      ]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CoolDevGuys\\Tests\\": [
+        "tests"
+      ]
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "symfony/runtime": true
+    }
+  },
+  "minimum-stability": "stable"
+}

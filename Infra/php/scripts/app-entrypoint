@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+if [ $# -eq 0 ]; then
+  echo ">> [INFO] Run pre-entrypoint scripts"
+  run-parts /usr/local/bin/pre-entrypoint
+
+  echo ">> [INFO] Start php-fpm"
+  docker-php-entrypoint php-fpm
+
+else
+  exec "$@"
+fi

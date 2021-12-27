@@ -1,0 +1,42 @@
+security:
+  enable_authenticator_manager: true
+  password_hashers:
+    Symfony\Component\Security\Core\User\InMemoryUser:
+      algorithm: plaintext
+  providers:
+    jwt:
+      lexik_jwt: ~
+    users_in_memory:
+      memory:
+        users:
+          client@cooldevguys:
+            password: "%env(CLIENT_PASSWORD)%"
+            roles: "ROLE_USER"
+
+  firewalls:
+    auth:
+      pattern: ^/auth
+      stateless: true
+      json_login:
+        check_path: /auth
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        provider: users_in_memory
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    unsecured:
+      pattern: ^/health-check|^/documentation
+      stateless: true
+      security: false
+    api:
+      stateless: true
+      jwt:
+        provider: users_in_memory
+      security: true
+
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
+  access_control:
+    - { path: ^/auth, roles: PUBLIC_ACCESS }
+#    - { path: ^/v1,       roles: IS_AUTHENTICATED_FULLY }

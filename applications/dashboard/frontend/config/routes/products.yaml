@@ -1,4 +1,0 @@
-products_get:
-  path: /products
-  controller: CoolDevGuys\Applications\Dashboard\Frontend\Controller\Products\ProductsGetController
-  methods: [ GET ]

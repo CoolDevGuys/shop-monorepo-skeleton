@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+use CoolDevGuys\Applications\Shop\ShopKernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+
+set_time_limit(0);
+
+if (!is_file(dirname(__DIR__) . '/../../vendor/autoload_runtime.php')) {
+    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
+}
+
+require dirname(__DIR__) . '/../../vendor/autoload_runtime.php';
+
+return function (array $context) {
+    $kernel = new ShopKernel($context['APP_ENV'], (bool)$context['APP_DEBUG']);
+    return new Application($kernel);
+};
