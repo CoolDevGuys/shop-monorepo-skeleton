@@ -6,6 +6,7 @@ services:
       context: ./Infra/php
       dockerfile: Dockerfile
       target: dev
+    user: www:data:www-data
     volumes:
         - ./Code:/Code:rw
     container_name: cooldevguys-skeleton-shop
@@ -20,6 +21,7 @@ services:
       context: ./Infra/php
       dockerfile: Dockerfile
       target: dev
+    user: www:data:www-data
     volumes:
         - ./Code:/Code:rw
     container_name: cooldevguys-skeleton-dashboard
