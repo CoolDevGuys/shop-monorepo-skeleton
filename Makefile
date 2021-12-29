@@ -1,7 +1,7 @@
 current-dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: build
-build: deps
+build: env-files deps
 	@docker-compose build
 
 env-files:
