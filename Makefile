@@ -28,7 +28,7 @@ composer-require-module: INTERACTIVE=-ti --interactive
 
 .PHONY: composer
 composer composer-install composer-update composer-require composer-require-module:
-	@docker run -e ENABLE_XDEBUG=true --rm $(INTERACTIVE) --volume $(current-dir)Code:/app --user www-data:www-data \
+	@docker run -e ENABLE_XDEBUG=true --rm $(INTERACTIVE) --volume $(current-dir)Code:/app --user $(id -u):$(id -g) \
 		alexromer0/php:composer-81 composer $(CMD) \
 			--prefer-dist --optimize-autoloader --no-ansi
 
