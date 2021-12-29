@@ -53,8 +53,8 @@ run-tests: env-files
 
 .PHONY: linter
 linter: env-files
-	docker exec -e APP_ENV=dev -e APP_DEBUG=1 cooldevguys-skeleton-shop bash -c "php applications/shop/bin/console cache:warmup && ./vendor/bin/phpstan analyse -c phpstan-shop.neon.dist --level=7"
-	docker exec -e APP_ENV=dev -e APP_DEBUG=1 cooldevguys-skeleton-dashboard bash -c "php applications/dashboard/bin/console cache:warmup && ./vendor/bin/phpstan analyse -c phpstan-dashboard.neon.dist --level=7"
+	docker exec -e APP_ENV=dev -e  APP_DEBUG=1 --user $(id -u):$(id -g) cooldevguys-skeleton-shop bash -c "php applications/shop/bin/console cache:warmup && ./vendor/bin/phpstan analyse -c phpstan-shop.neon.dist --level=7"
+	docker exec -e APP_ENV=dev -e APP_DEBUG=1 --user $(id -u):$(id -g) cooldevguys-skeleton-dashboard bash -c "php applications/dashboard/bin/console cache:warmup && ./vendor/bin/phpstan analyse -c phpstan-dashboard.neon.dist --level=7"
 
 .PHONY: start
 start: CMD=up -d
