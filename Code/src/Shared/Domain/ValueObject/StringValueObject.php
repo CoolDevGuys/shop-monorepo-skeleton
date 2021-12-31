@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Domain\ValueObject;
 
-abstract class StringValueObject
-{
-    protected string $value;
+use CoolDevGuys\Shared\Domain\ValueObject;
 
-    public function __construct(string $value)
+abstract class StringValueObject implements ValueObject
+{
+    public function __construct(protected string $value)
     {
-        $this->value = $value;
     }
 
     public function value(): string

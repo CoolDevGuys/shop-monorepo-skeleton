@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Domain\ValueObject;
 
-abstract class IntValueObject
-{
-    protected int $value;
+use CoolDevGuys\Shared\Domain\ValueObject;
 
-    public function __construct(int $value)
+abstract class IntValueObject implements ValueObject
+{
+    public function __construct(protected int $value)
     {
-        $this->value = $value;
     }
 
     public function value(): int
