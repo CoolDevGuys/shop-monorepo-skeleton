@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace CoolDevGuys\Shared\Domain\ValueObject;
 
 use CoolDevGuys\Shared\Domain\Utils;
+use CoolDevGuys\Shared\Domain\ValueObject;
 use function Lambdish\Phunctional\reindex;
 
-abstract class Enum implements \Stringable
+abstract class Enum implements ValueObject
 {
     protected static array $cache = [];
 
