@@ -1,14 +1,14 @@
 services:
   # Databases
   Doctrine\ORM\EntityManager:
-    factory: [ CoolDevGuys\Shop\Shared\Infrastructure\Doctrine\StoreEntityManagerFactory, create ]
+    factory: [ CoolDevGuys\Shop\Shared\Infrastructure\Doctrine\ShopEntityManagerFactory, create ]
     arguments:
-      - driver: '%env(STORE_DATABASE_DRIVER)%'
-        host: '%env(STORE_DATABASE_HOST)%'
-        port: '%env(STORE_DATABASE_PORT)%'
-        dbname: '%env(STORE_DATABASE_NAME)%'
-        user: '%env(STORE_DATABASE_USER)%'
-        password: '%env(STORE_DATABASE_PASSWORD)%'
+      - driver: '%env(SHOP_DATABASE_DRIVER)%'
+        host: '%env(SHOP_DATABASE_HOST)%'
+        port: '%env(SHOP_DATABASE_PORT)%'
+        dbname: '%env(SHOP_DATABASE_NAME)%'
+        user: '%env(SHOP_DATABASE_USER)%'
+        password: '%env(SHOP_DATABASE_PASSWORD)%'
       - '%env(APP_ENV)%'
     tags:
       - { name: cooldevguys.database_connection }
