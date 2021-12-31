@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace CoolDevGuys\Shared\Infrastructure\Persistence\Doctrine;
 
 use CoolDevGuys\Shared\Domain\Utils;
-use CoolDevGuys\Shared\Domain\ValueObject\Uuid;
-use CoolDevGuys\Shared\Infrastructure\Doctrine\Dbal\DoctrineCustomType;
+use CoolDevGuys\Shared\Domain\ValueObject\DateValueObject;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\StringType;
 use function Lambdish\Phunctional\last;
 
-abstract class UuidType extends StringType implements DoctrineCustomType
+abstract class DateTimeType extends \Doctrine\DBAL\Types\DateTimeType implements \Stringable
 {
     abstract protected function typeClassName(): string;
 
@@ -33,9 +31,9 @@ abstract class UuidType extends StringType implements DoctrineCustomType
     }
 
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): \DateTime
     {
-        /** @var Uuid $value */
+        /** @var DateValueObject $value */
         return $value->value();
     }
 }

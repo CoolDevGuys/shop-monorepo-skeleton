@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace CoolDevGuys\Shared\Infrastructure\Persistence\Doctrine;
 
 use CoolDevGuys\Shared\Domain\Utils;
-use CoolDevGuys\Shared\Domain\ValueObject\Uuid;
+use CoolDevGuys\Shared\Domain\ValueObject\StringValueObject;
 use CoolDevGuys\Shared\Infrastructure\Doctrine\Dbal\DoctrineCustomType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 use function Lambdish\Phunctional\last;
 
-abstract class UuidType extends StringType implements DoctrineCustomType
+abstract class TextType extends StringType implements DoctrineCustomType
 {
     abstract protected function typeClassName(): string;
 
@@ -35,7 +35,7 @@ abstract class UuidType extends StringType implements DoctrineCustomType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {
-        /** @var Uuid $value */
+        /** @var StringValueObject $value */
         return $value->value();
     }
 }

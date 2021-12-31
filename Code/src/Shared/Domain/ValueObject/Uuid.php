@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Domain\ValueObject;
 
+use CoolDevGuys\Shared\Domain\ValueObject;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
-final class Uuid
+class Uuid implements ValueObject
 {
-    protected string $value;
-
-    public function __construct(string $value)
+    public function __construct(protected string $value)
     {
         $this->ensureIsValidUuid($value);
-
-        $this->value = $value;
     }
 
     public static function random(): self
