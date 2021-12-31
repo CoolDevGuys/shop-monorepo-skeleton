@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Domain\Criteria;
 
+use CoolDevGuys\Shared\Domain\Errors\InvalidCriteriaLimitError;
+
 final class Criteria
 {
-    private Filters $filters;
-    private Order   $order;
-    private ?int    $offset;
-    private ?int    $limit;
+    private const MAX_LIMIT = 50;
+    private ?int $limit;
 
-    public function __construct(Filters $filters, Order $order, ?int $offset, ?int $limit)
+    public function __construct(private Filters $filters, private Order $order, private ?int $offset, ?int $limit)
     {
-        $this->filters = $filters;
-        $this->order   = $order;
-        $this->offset  = $offset;
-        $this->limit   = $limit;
+        $this->guardLimit($limit);
+        $this->limit = $limit ?? self::MAX_LIMIT;
     }
 
     public function hasFilters(): bool
@@ -63,5 +61,12 @@ final class Criteria
             $this->offset,
             $this->limit
         );
+    }
+
+    private function guardLimit(?int $limit): void
+    {
+        if (null !== $limit && $limit > self::MAX_LIMIT) {
+            throw new InvalidCriteriaLimitError($limit, self::MAX_LIMIT);
+        }
     }
 }
