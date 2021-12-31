@@ -2,6 +2,7 @@
 !.env.*.dist
 
 /Code/applications/*/var/
+!/Code/applications/*/var/cache/.gitkeep
 /Code/build
 /Code/vendor
 

@@ -1,7 +1,7 @@
 current-dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: build
-build: deps
+build: env-files deps
 	@docker-compose build
 
 env-files:
@@ -28,7 +28,7 @@ composer-require-module: INTERACTIVE=-ti --interactive
 
 .PHONY: composer
 composer composer-install composer-update composer-require composer-require-module:
-	@docker run -e ENABLE_XDEBUG=true --rm $(INTERACTIVE) --volume $(current-dir)Code:/app --user www-data:www-data \
+	@docker run -e ENABLE_XDEBUG=true --rm $(INTERACTIVE) --volume $(current-dir)Code:/app --user $(id -u):$(id -g) \
 		alexromer0/php:composer-81 composer $(CMD) \
 			--prefer-dist --optimize-autoloader --no-ansi
 
@@ -53,8 +53,8 @@ run-tests: env-files
 
 .PHONY: linter
 linter: env-files
-	docker exec -e APP_ENV=dev -e APP_DEBUG=1 cooldevguys-skeleton-shop bash -c "php applications/shop/bin/console cache:warmup && ./vendor/bin/phpstan analyse -c phpstan-shop.neon.dist --level=7"
-	docker exec -e APP_ENV=dev -e APP_DEBUG=1 cooldevguys-skeleton-dashboard bash -c "php applications/dashboard/bin/console cache:warmup && ./vendor/bin/phpstan analyse -c phpstan-dashboard.neon.dist --level=7"
+	docker exec -e APP_ENV=dev -e  APP_DEBUG=1 --user $(id -u):$(id -g) cooldevguys-skeleton-shop bash -c "php applications/shop/bin/console cache:warmup && ./vendor/bin/phpstan analyse -c phpstan-shop.neon.dist --level=7"
+	docker exec -e APP_ENV=dev -e APP_DEBUG=1 --user $(id -u):$(id -g) cooldevguys-skeleton-dashboard bash -c "php applications/dashboard/bin/console cache:warmup && ./vendor/bin/phpstan analyse -c phpstan-dashboard.neon.dist --level=7"
 
 .PHONY: start
 start: CMD=up -d
