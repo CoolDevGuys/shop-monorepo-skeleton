@@ -20,6 +20,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 COPY --chown=www-data:www-data ./Code .
 
-RUN composer install
-
 USER www-data
+
+RUN composer install
