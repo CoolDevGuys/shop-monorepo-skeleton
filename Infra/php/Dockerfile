@@ -2,9 +2,9 @@ FROM alexromer0/php:fpm-81 as dev
 
 WORKDIR /Code
 
-COPY ./scripts/app-entrypoint /usr/local/bin
-COPY ./scripts/pre-entrypoint/ /usr/local/bin/pre-entrypoint/
-COPY ./scripts/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+COPY ./Infra/php/scripts/app-entrypoint /usr/local/bin
+COPY ./Infra/php/scripts/pre-entrypoint/ /usr/local/bin/pre-entrypoint/
+COPY ./Infra/php/scripts/wait-for-it.sh /usr/local/bin/wait-for-it.sh
 
 RUN chown -R root:www-data /usr/local/bin /usr/local/etc && chmod -R 775 /usr/local/etc
 
@@ -16,6 +16,6 @@ FROM dev as prod
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY --chown=www-data:www-data ../../Code .
+COPY --chown=www-data:www-data ./Code .
 
 RUN composer install

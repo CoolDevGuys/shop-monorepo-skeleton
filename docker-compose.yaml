@@ -3,7 +3,7 @@ version: '3.8'
 services:
   shop:
     build:
-      context: ./Infra/php
+      context: .
       dockerfile: Dockerfile
       target: dev
     volumes:
@@ -17,7 +17,7 @@ services:
 
   dashboard:
     build:
-      context: ./Infra/php
+      context: .
       dockerfile: Dockerfile
       target: dev
     volumes:
