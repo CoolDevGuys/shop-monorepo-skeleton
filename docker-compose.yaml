@@ -4,7 +4,7 @@ services:
   shop:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./Infra/php/Dockerfile
       target: dev
     volumes:
         - ./Code:/Code:rw
@@ -18,7 +18,7 @@ services:
   dashboard:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./Infra/php/Dockerfile
       target: dev
     volumes:
         - ./Code:/Code:rw
