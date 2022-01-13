@@ -62,8 +62,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          push: true
           builder: ${{ steps.buildx.outputs.name }}
-          file: .Infra/php/Dockerfile
+          file: ./Infra/php/Dockerfile
           target: prod
           tags: ${{ steps.prep.outputs.tagged_image }}
           cache-from: type=local,src=/tmp/.buildx-cache
