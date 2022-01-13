@@ -61,7 +61,7 @@ jobs:
       - name: Build production image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./Infra/php
           push: true
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Infra/php/Dockerfile
