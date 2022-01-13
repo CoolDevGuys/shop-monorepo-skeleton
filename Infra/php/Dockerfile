@@ -2,6 +2,8 @@ FROM alexromer0/php:fpm-81 as dev
 
 WORKDIR /Code
 
+RUN chown -R www-data:www-data .
+
 COPY ./Infra/php/scripts/app-entrypoint /usr/local/bin
 COPY ./Infra/php/scripts/pre-entrypoint/ /usr/local/bin/pre-entrypoint/
 COPY ./Infra/php/scripts/wait-for-it.sh /usr/local/bin/wait-for-it.sh
