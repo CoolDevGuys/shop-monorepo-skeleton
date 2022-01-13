@@ -14,8 +14,12 @@ ENTRYPOINT ["/usr/local/bin/app-entrypoint"]
 
 FROM dev as prod
 
+USER root
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY --chown=www-data:www-data ./Code .
 
 RUN composer install
+
+USER www-data
