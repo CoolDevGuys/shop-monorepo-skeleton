@@ -33,6 +33,7 @@ services:
     build:
       context: ./Infra/nginx
       dockerfile: Dockerfile
+      target: dev
     ports:
       - "8001:8001"
       - "8002:8002"
