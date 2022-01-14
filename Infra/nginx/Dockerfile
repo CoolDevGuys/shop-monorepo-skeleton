@@ -5,12 +5,12 @@ COPY public /Code/applications/dashboard/public
 
 FROM base as dev
 
-COPY shop_dev.conf /etc/nginx/conf.d/shop_dev.conf
-COPY dashboard_dev.conf /etc/nginx/conf.d/dashboard_dev.conf
+COPY shop_dev.conf /etc/nginx/conf.d/shop.conf
+COPY dashboard_dev.conf /etc/nginx/conf.d/dashboard.conf
 
 FROM base as prod
 
-COPY shop_dev.conf /etc/nginx/conf.d/shop_prod.conf
-COPY dashboard_dev.conf /etc/nginx/conf.d/dashboard_prod.conf
+COPY shop_prod.conf /etc/nginx/conf.d/shop.conf
+COPY dashboard_prod.conf /etc/nginx/conf.d/dashboard.conf
 
 

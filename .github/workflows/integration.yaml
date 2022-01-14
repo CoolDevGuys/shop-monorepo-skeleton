@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  build-and-test:
+  test-and-linter:
     runs-on: ubuntu-latest
 
     steps:
@@ -73,7 +73,7 @@ jobs:
       - name: Build nginx production image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./Infra/nginx
           push: true
           file: ./Infra/nginx/Dockerfile
           target: prod
