@@ -69,5 +69,10 @@
       "symfony/runtime": true
     }
   },
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "extra": {
+    "runtime": {
+      "disable_dotenv": true
+    }
+  }
 }
