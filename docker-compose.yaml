@@ -7,7 +7,7 @@ services:
       dockerfile: ./Infra/php/Dockerfile
       target: dev
     volumes:
-        - ./Code:/Code:rw
+      - ./Code:/Code:rw
     container_name: cooldevguys-skeleton-shop
     env_file:
       - Code/.env.shop
@@ -21,24 +21,33 @@ services:
       dockerfile: ./Infra/php/Dockerfile
       target: dev
     volumes:
-        - ./Code:/Code:rw
+      - ./Code:/Code:rw
     container_name: cooldevguys-skeleton-dashboard
     env_file:
       - Code/.env.dashboard
 #    depends_on:
 #      - shared_rabbitmq
 
-  shared_nginx:
-    container_name: cooldevguys-skeleton-shared_nginx
+  shop_nginx:
+    container_name: cooldevguys-skeleton-shop_nginx
     build:
       context: ./Infra/nginx
       dockerfile: Dockerfile
-      target: dev
+      target: shop-dev
     ports:
       - "8001:8001"
-      - "8002:8002"
     depends_on:
       - shop
+
+  dashboard_nginx:
+    container_name: cooldevguys-skeleton-dashboard_nginx
+    build:
+      context: ./Infra/nginx
+      dockerfile: Dockerfile
+      target: dashboard-dev
+    ports:
+      - "8002:8002"
+    depends_on:
       - dashboard
 
 #  shared_elasticsearch:
