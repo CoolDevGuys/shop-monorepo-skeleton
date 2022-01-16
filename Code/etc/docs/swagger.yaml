@@ -1,29 +1,26 @@
 openapi: 3.0.3
 
 info:
-  description: "Cooldevguys Shop API"
+  description: "Cooldevguys Shop monorepo API"
   version: "1.0.0"
   title: "Amazing generic Shop API"
 
 servers:
-  - url: '{environment}'
+  - url: '{apiServer}'
     description: API server
     variables:
-      environment:
+      apiServer:
         enum:
-          - 'http://localhost:8001'
-          - 'https://api.cooldevguys.com'
-          - 'https://dev.cooldevguys.com'
+          - 'http://localhost:8001' #Shop
+          - 'http://localhost:8002' #Dashboard
         default: 'http://localhost:8001'
-        description: Environment
+        description: API Server
 
 tags:
-  - name: "Shop"
-  - name: "Dashboard"
+  - name: "shop"
+  - name: "dashboard"
   - name: "auth"
   - name: "health-check"
-  - name: "marketing"
-  - name: "suggestions"
 
 paths:
   /auth:
@@ -108,7 +105,60 @@ paths:
             application/json:
               schema:
                 type: object
-
+  /products:
+    get:
+      tags:
+        - "shop"
+      summary: "Return a paginated list of all the products that matches the given criteria"
+      operationId: "products"
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: "Declare how many items per page should retrieve. Max allowed value: 50"
+          schema:
+            type: integer
+            example: 50
+        - name: cursor
+          in: query
+          required: false
+          description: "Page number"
+          schema:
+            type: integer
+            example: 2
+        - name: sort
+          in: query
+          required: false
+          description: "Sort the results by the given columns, it sorts it in ASC by default and if the column has a '-' character at the beginning it indicates sort in DESC mode"
+          schema:
+            type: string
+            example: "-name"
+        - name: price
+          in: query
+          required: false
+          description: "Filters products that the price is greater or equal than the given value"
+          schema:
+            type: number
+            example: 12.5
+      responses:
+        "200":
+          description: "Products successful retrieved"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/apiResponse'
+                  - properties:
+                      links:
+                        properties:
+                          next:
+                            type: string
+                            example: "/products?cursor=2"
+                          prev:
+                            type: string
+                            example: "/products?cursor=1"
+                      data:
+                        $ref: './Schemas/productsResponse.yaml'
 components:
   responses:
     401Unauthorized:
@@ -175,6 +225,8 @@ components:
               example: "https://example.com/articles?page[offset]=10"
         data:
           type: array
+          items:
+            $ref: '#/components/schemas/dataItem'
         meta:
           type: array
           nullable: true
@@ -206,3 +258,19 @@ components:
         meta:
           type: array
           description: "Meta information, in development environment it contains the exception stack trace"
+    dataItem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: articles
+          description: Item type domain wise
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        attributes:
+          type: object
+          description: Item attributes
+
+
