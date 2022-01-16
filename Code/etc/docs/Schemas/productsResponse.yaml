@@ -1,0 +1,16 @@
+type: array
+  items:
+    type: object
+    properties:
+      type:
+        type: string
+        example: "products"
+      attributes:
+        type: object
+        properties:
+          price:
+            type: number
+            example: 99.99
+          name:
+            type: string
+            example: "Cool product"
