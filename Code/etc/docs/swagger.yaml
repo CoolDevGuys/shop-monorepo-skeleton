@@ -1,9 +1,9 @@
 openapi: 3.0.3
 
 info:
-  description: "Cooldevguys Shop monorepo API"
-  version: "1.0.0"
-  title: "Amazing generic Shop API"
+  description: 'Cooldevguys Shop monorepo API'
+  version: '1.0.0'
+  title: 'Amazing generic Shop API'
 
 servers:
   - url: '{apiServer}'
@@ -17,19 +17,19 @@ servers:
         description: API Server
 
 tags:
-  - name: "shop"
-  - name: "dashboard"
-  - name: "auth"
-  - name: "health-check"
+  - name: 'shop'
+  - name: 'dashboard'
+  - name: 'auth'
+  - name: 'health-check'
 
 paths:
   /auth:
     post:
       tags:
-        - "shop"
-        - "dashboard"
-        - "auth"
-      summary: "Authenticate an user, returning a JWT"
+        - 'shop'
+        - 'dashboard'
+        - 'auth'
+      summary: 'Authenticate an user, returning a JWT'
       operationId: auth
       requestBody:
         description: Credentials object
@@ -40,13 +40,13 @@ paths:
               properties:
                 username:
                   type: string
-                  example: "user@coolshop"
+                  example: 'user@coolshop'
                 password:
                   type: string
-                  example: "aSecr3tPassw0rd"
+                  example: 'aSecr3tPassw0rd'
       responses:
         "200":
-          description: Successfully authenticated
+          description: 'Successfully authenticated'
           content:
             application/json:
               schema:
@@ -54,7 +54,7 @@ paths:
                 properties:
                   token:
                     type: string
-                    example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2Mzk0ODEyODMsImV4cCI6MTYzOTQ4NDg4Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiY2xpZW50QG1lZGltb3BzIn0.wN4qHcipslg92EUNKFZdSAUqN9Fw_X8F7Xp-sNj4_CoQxor9sq6aER0MQKKegYhwyFjqylrI7hYwhWJpGiW7wcUskOcOklLV5sDJK7FL-dQmnYBhU8xH7v0gbxORjtDHpfm1Uy2aFCYUt7kHMLBqbRHbdymAp4vGY38F9CBGlx83y7yMt4G8cjMn1sjux4qcibJ-H9JZs4tCB0BKCvwvNc3gy_cosksi0W4mL4OhC07KIofim5Cxh3pbrBHGWiVn7jc67WKElEp3U31y55Z-fhYZ2e_Qi-c5D9b-Y8XyWCJn_GjqEFSOR12wsimnscHUZKITRPfyWAcvYhEmmuEN0A"
+                    example: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2Mzk0ODEyODMsImV4cCI6MTYzOTQ4NDg4Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiY2xpZW50QG1lZGltb3BzIn0.wN4qHcipslg92EUNKFZdSAUqN9Fw_X8F7Xp-sNj4_CoQxor9sq6aER0MQKKegYhwyFjqylrI7hYwhWJpGiW7wcUskOcOklLV5sDJK7FL-dQmnYBhU8xH7v0gbxORjtDHpfm1Uy2aFCYUt7kHMLBqbRHbdymAp4vGY38F9CBGlx83y7yMt4G8cjMn1sjux4qcibJ-H9JZs4tCB0BKCvwvNc3gy_cosksi0W4mL4OhC07KIofim5Cxh3pbrBHGWiVn7jc67WKElEp3U31y55Z-fhYZ2e_Qi-c5D9b-Y8XyWCJn_GjqEFSOR12wsimnscHUZKITRPfyWAcvYhEmmuEN0A'
         "400":
           $ref: '#/components/responses/400BadRequest'
         "401":
@@ -63,14 +63,14 @@ paths:
   /health-check:
     get:
       tags:
-        - "shop"
-        - "dashboard"
-        - "health-check"
-      summary: "Check if the application is healthy"
-      operationId: "healthCheck"
+        - 'shop'
+        - 'dashboard'
+        - 'health-check'
+      summary: 'Check if the application is healthy'
+      operationId: 'healthCheck'
       responses:
         "200":
-          description: "Success"
+          description: 'Success'
           content:
             application/json:
               schema:
@@ -78,21 +78,21 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: "ok"
+                    example: 'ok'
         "500":
-          $ref: "#/components/responses/500Error"
+          $ref: '#/components/responses/500Error'
 
   /health-check/details:
     get:
       tags:
-        - "shop"
-        - "dashboard"
-        - "health-check"
+        - 'shop'
+        - 'dashboard'
+        - 'health-check'
       summary: "Return a detailed info about the application's health"
-      operationId: "healthCheckDetail"
+      operationId: 'healthCheckDetail'
       responses:
         "200":
-          description: "Application is healthy"
+          description: 'Application is healthy'
           content:
             application/json:
               schema:
@@ -100,7 +100,7 @@ paths:
         "401":
           $ref: '#/components/responses/401Unauthorized'
         "500":
-          description: "Application not healthy"
+          description: 'Application not healthy'
           content:
             application/json:
               schema:
@@ -108,21 +108,21 @@ paths:
   /products:
     get:
       tags:
-        - "shop"
-      summary: "Return a paginated list of all the products that matches the given criteria"
-      operationId: "products"
+        - 'shop'
+      summary: 'Return a paginated list of all the products that matches the given criteria'
+      operationId: 'products'
       parameters:
         - name: limit
           in: query
           required: false
-          description: "Declare how many items per page should retrieve. Max allowed value: 50"
+          description: 'Declare how many items per page should retrieve. Max allowed value: 50'
           schema:
             type: integer
             example: 50
         - name: cursor
           in: query
           required: false
-          description: "Page number"
+          description: 'Page number'
           schema:
             type: integer
             example: 2
@@ -132,17 +132,17 @@ paths:
           description: "Sort the results by the given columns, it sorts it in ASC by default and if the column has a '-' character at the beginning it indicates sort in DESC mode"
           schema:
             type: string
-            example: "-name"
+            example: '-name'
         - name: price
           in: query
           required: false
-          description: "Filters products that the price is greater or equal than the given value"
+          description: 'Filters products that the price is greater or equal than the given value'
           schema:
             type: number
             example: 12.5
       responses:
         "200":
-          description: "Products successful retrieved"
+          description: 'Products successful retrieved'
           content:
             application/json:
               schema:
@@ -153,10 +153,10 @@ paths:
                         properties:
                           next:
                             type: string
-                            example: "/products?cursor=2"
+                            example: '/products?cursor=2'
                           prev:
                             type: string
-                            example: "/products?cursor=1"
+                            example: '/products?cursor=1'
                       data:
                         $ref: './Schemas/productsResponse.yaml'
 components:
