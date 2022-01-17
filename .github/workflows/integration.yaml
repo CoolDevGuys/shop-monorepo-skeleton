@@ -28,9 +28,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Creating version
+      - name: Run version
         uses: CoolDevGuys/image-tag-creator@1.0.0
         id: image_tag
+      - name: Create Version file
+        run: echo ${{tag}} > Code/VERSION
 
       - name: Prepare
         id: prep

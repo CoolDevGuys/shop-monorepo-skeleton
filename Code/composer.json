@@ -29,7 +29,8 @@
     "league/openapi-psr7-validator": "^0.16.4",
     "symfony/psr-http-message-bridge": "^2.1",
     "nyholm/psr7": "^1.4",
-    "lexik/jwt-authentication-bundle": "^2.14"
+    "lexik/jwt-authentication-bundle": "^2.14",
+    "sentry/sentry-symfony": "^4.2"
   },
   "require-dev": {
     "ext-xdebug": "*",

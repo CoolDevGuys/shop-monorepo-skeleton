@@ -1,0 +1,10 @@
+parameters:
+  env(VERSION_FILE): '%kernel.project_dir%/../../VERSION'
+
+sentry:
+  dsn: '%env(SHOP_SENTRY_DSN)%'
+  register_error_listener: true
+  options:
+    environment: '%kernel.environment%'
+    release: '%env(file:VERSION_FILE)%'
+    error_types: "E_ERROR"
