@@ -32,7 +32,7 @@ jobs:
         uses: CoolDevGuys/image-tag-creator@1.0.0
         id: image_tag
       - name: Create Version file
-        run: echo ${{tag}} > Code/VERSION
+        run: echo ${{steps.image_tag.outputs.tag}} > Code/VERSION
 
       - name: Prepare
         id: prep
