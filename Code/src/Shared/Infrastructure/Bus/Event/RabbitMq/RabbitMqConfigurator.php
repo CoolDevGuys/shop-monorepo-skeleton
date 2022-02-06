@@ -8,7 +8,7 @@ use AMQPQueue;
 use CoolDevGuys\Shared\Domain\Bus\Event\DomainEventSubscriber;
 use function Lambdish\Phunctional\each;
 
-final class RabbitMqConfigurer
+final class RabbitMqConfigurator
 {
     private RabbitMqConnection $connection;
 

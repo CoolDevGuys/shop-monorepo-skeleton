@@ -76,13 +76,13 @@ services:
       retries: 10
     command: [ "--default-authentication-plugin=mysql_native_password" ]
 
-#  shared_rabbitmq:
-#    container_name: cooldevguys-skeleton-shared_rabbitmq
-#    image: 'rabbitmq:3.7-management'
-#    restart: unless-stopped
-#    ports:
-#      - "5630:5672"
-#      - "8090:15672"
-#    environment:
-#      - RABBITMQ_DEFAULT_USER=rabbit
-#      - RABBITMQ_DEFAULT_PASS=rabb1t
+  shared_rabbitmq:
+    container_name: cooldevguys-skeleton-shared_rabbitmq
+    image: 'rabbitmq:3.7-management'
+    restart: unless-stopped
+    ports:
+      - "5630:5672"
+      - "8090:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbit
+      - RABBITMQ_DEFAULT_PASS=rabb1t
