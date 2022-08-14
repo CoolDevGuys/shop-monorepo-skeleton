@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: shop
+  name: shop
+  namespace: shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shop
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: shop
+    spec:
+      containers:
+        - env:
+            - name: APP_ENV
+              value: staging
+            - name: APP_DEBUG
+              value: "0"
+            - name: APP_NAME
+              value: shop
+            - name: APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: secret_token_staging
+                  name: shop
+            - name: SHOP_SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  key: sentry_dsn_staging
+                  name: shop
+            - name: CLIENT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: client_password_staging
+                  name: shop
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: jwt_secret_key_staging
+                  name: shop
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: jwt_public_key_staging
+                  name: shop
+            - name: JWT_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  key: jwt_phassphrase_staging
+                  name: shop
+            - name: SHOP_DATABASE_DRIVER
+              value: pdo_mysql
+            - name: SHOP_DATABASE_HOST
+              value: shared-mysql
+            - name: SHOP_DATABASE_PORT
+              value: "3306"
+            - name: SHOP_DATABASE_NAME
+              value: shop
+            - name: SHOP_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database_user_staging
+                  name: shop
+            - name: SHOP_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database_password_staging
+                  name: shop
+          image: alexromer0/shop-app:develop
+          imagePullPolicy: Always
+          name: shop
+          ports:
+            - containerPort: 9000
+              name: shop
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
