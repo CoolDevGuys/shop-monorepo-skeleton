@@ -7,7 +7,7 @@ namespace CoolDevGuys\Shop\Products\Infrastructure\Persistence\Doctrine;
 use CoolDevGuys\Shared\Infrastructure\Persistence\Doctrine\TextType;
 use CoolDevGuys\Shop\Products\Domain\ValueObject\ProductName;
 
-final class ProductNameType extends TextType
+final class ProductNameDoctrineType extends TextType
 {
     protected function typeClassName(): string
     {

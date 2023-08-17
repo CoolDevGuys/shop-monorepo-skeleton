@@ -1,4 +1,4 @@
-FROM alexromer0/php:fpm-81 as dev
+FROM alexromer0/php:fpm-82 as dev
 
 WORKDIR /Code
 

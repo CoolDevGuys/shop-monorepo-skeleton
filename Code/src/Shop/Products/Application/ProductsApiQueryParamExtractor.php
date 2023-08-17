@@ -6,18 +6,18 @@ namespace CoolDevGuys\Shop\Products\Application;
 
 use CoolDevGuys\Shared\Application\ApiRequest\ApiQueryParamsExtractor;
 use CoolDevGuys\Shared\Domain\ValueObject\FiltersQueryParam;
-use CoolDevGuys\Shared\Domain\ValueObject\SortQueryParam;
+use CoolDevGuys\Shared\Domain\ValueObject\AbstractSortQueryParam;
 use CoolDevGuys\Shop\Products\Domain\ValueObject\ProductsFilterQueryParam;
-use CoolDevGuys\Shop\Products\Domain\ValueObject\ProductsSortQueryParam;
+use CoolDevGuys\Shop\Products\Domain\ValueObject\ProductsAbstractSortQueryParam;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ProductsApiQueryParamExtractor extends ApiQueryParamsExtractor
 {
-    protected static function extractSort(Request $request): ?SortQueryParam
+    protected static function extractSort(Request $request): ?AbstractSortQueryParam
     {
-        $sort = $request->query->get(SortQueryParam::SORT_LABEL, null);
+        $sort = $request->query->get(AbstractSortQueryParam::SORT_LABEL, null);
         if (!empty($sort)) {
-            return new ProductsSortQueryParam($sort);
+            return new ProductsAbstractSortQueryParam($sort);
         }
 
         return null;

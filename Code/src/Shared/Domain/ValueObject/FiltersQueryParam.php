@@ -18,7 +18,8 @@ final class FiltersQueryParam extends Collection implements \Stringable
     {
         $str = '';
         $this->each(
-            static function (FilterQueryParam $filter) use (&$str) {
+            static function (FilterQueryParam $filter) use (&$str)
+            {
                 if (empty($str)) {
                     $str = $filter->__toString();
                 } else {
@@ -33,7 +34,8 @@ final class FiltersQueryParam extends Collection implements \Stringable
     public function asArray(): array
     {
         return map(
-            function (FilterQueryParam $filter) {
+            function (FilterQueryParam $filter)
+            {
                 return $filter->toArray();
             },
             $this->items()
@@ -47,11 +49,17 @@ final class FiltersQueryParam extends Collection implements \Stringable
         }
         return new self(
             map(
-                function (array $filter) {
+                function (array $filter)
+                {
                     return FilterQueryParam::fromArray($filter);
                 },
                 $filters
             )
         );
+    }
+
+    public function toArray(): array
+    {
+        return map(fn(FilterQueryParam $param) => $param->toArray(), $this->items());
     }
 }

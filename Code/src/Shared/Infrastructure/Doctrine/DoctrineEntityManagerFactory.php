@@ -11,6 +11,7 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ORM\Tools\Setup;
+use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
 use function Lambdish\Phunctional\dissoc;
 
 final class DoctrineEntityManagerFactory
@@ -23,11 +24,10 @@ final class DoctrineEntityManagerFactory
         array $parameters,
         array $contextPrefixes,
         bool $isDevMode,
-        string $schemaFile,
         array $dbalCustomTypesClasses
     ): EntityManager {
         if ($isDevMode) {
-            static::generateDatabaseIfNotExists($parameters, $schemaFile);
+            static::generateDatabaseIfNotExists($parameters);
         }
 
         DbalCustomTypesRegistrar::register($dbalCustomTypesClasses);
@@ -35,10 +35,8 @@ final class DoctrineEntityManagerFactory
         return EntityManager::create($parameters, self::createConfiguration($contextPrefixes, $isDevMode));
     }
 
-    private static function generateDatabaseIfNotExists(array $parameters, string $schemaFile): void
+    private static function generateDatabaseIfNotExists(array $parameters): void
     {
-        self::ensureSchemaFileExists($schemaFile);
-
         $databaseName = $parameters['dbname'];
         $parametersWithoutDatabaseName = dissoc($parameters, 'dbname');
         $connection = DriverManager::getConnection($parametersWithoutDatabaseName);
@@ -46,16 +44,6 @@ final class DoctrineEntityManagerFactory
 
         if (!self::databaseExists($databaseName, $schemaManager)) {
             $schemaManager->createDatabase($databaseName);
-            $connection->executeStatement(sprintf('USE %s', $databaseName));
-            $schema = realpath($schemaFile);
-            if (is_bool($schema)) {
-                throw new \RuntimeException('Database schema file missing');
-            }
-            $schemaContent = file_get_contents($schema);
-            if (empty($schemaContent)) {
-                throw new \RuntimeException('Database schema file empty');
-            }
-            $connection->executeStatement($schemaContent);
         }
 
         $connection->close();
@@ -66,16 +54,9 @@ final class DoctrineEntityManagerFactory
         return in_array($databaseName, $schemaManager->listDatabases(), true);
     }
 
-    private static function ensureSchemaFileExists(string $schemaFile): void
-    {
-        if (!file_exists($schemaFile)) {
-            throw new \RuntimeException(sprintf('The file <%s> does not exist', $schemaFile));
-        }
-    }
-
     private static function createConfiguration(array $contextPrefixes, bool $isDevMode): Configuration
     {
-        $queryCache = new \Symfony\Component\Cache\Adapter\PhpFilesAdapter('doctrine_queries');
+        $queryCache = new PhpFilesAdapter('doctrine_queries');
         $config = Setup::createConfiguration($isDevMode, null);
         $config->setQueryCache($queryCache);
 

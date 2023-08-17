@@ -6,7 +6,7 @@ namespace CoolDevGuys\Shared\Domain\Response;
 
 interface JsonApiResponse
 {
-    public function toArray(): array;
+    public function toArray(): ?array;
 
     public function statusCode(): int;
 }

@@ -13,6 +13,15 @@ if (!is_file(dirname(__DIR__) . '/../../vendor/autoload_runtime.php')) {
 
 require dirname(__DIR__) . '/../../vendor/autoload_runtime.php';
 
+$input = new ArgvInput();
+if (null !== $env = $input->getParameterOption(['--env', '-e'], null, true)) {
+    putenv('APP_ENV=' . $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
+}
+
+if ($input->hasParameterOption('--no-debug', true)) {
+    putenv('APP_DEBUG=' . $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
+}
+
 return function (array $context) {
     $kernel = new DashboardKernel($context['APP_ENV'], (bool)$context['APP_DEBUG']);
     return new Application($kernel);

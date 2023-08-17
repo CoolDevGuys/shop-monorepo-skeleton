@@ -9,8 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class ShopEntityManagerFactory
 {
-    private const SCHEMA_PATH = __DIR__ . '/../../../../../etc/databases/shop.sql';
-
     public static function create(array $parameters, string $environment): EntityManagerInterface
     {
         $isDevMode = 'prod' !== $environment;
@@ -26,7 +24,6 @@ final class ShopEntityManagerFactory
             $parameters,
             $prefixes,
             $isDevMode,
-            self::SCHEMA_PATH,
             $dbalCustomTypesClasses
         );
     }

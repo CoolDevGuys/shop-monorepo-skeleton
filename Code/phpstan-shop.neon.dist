@@ -1,6 +1,7 @@
 includes:
   - vendor/phpstan/phpstan-symfony/extension.neon
   - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+  - vendor/cooldevguys/phpstan-dhexpendency-rules/rules.neon
 
 parameters:
   level: 7
@@ -21,3 +22,9 @@ parameters:
   inferPrivatePropertyTypeFromConstructor: true
   symfony:
     console_application_loader: tests/console-shop.php
+  myVendorName: CoolDevGuys
+  vendorStrictMode: true
+  ignoredExternalVendors: ['Ramsey']
+  infrastructureLayerName: Infrastructure
+  applicationLayerName: Application
+  domainLayerName: Domain

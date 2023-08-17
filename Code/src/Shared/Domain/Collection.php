@@ -41,4 +41,6 @@ abstract class Collection implements Countable, IteratorAggregate
     {
         return $this->items;
     }
+
+    abstract public function toArray(): array;
 }

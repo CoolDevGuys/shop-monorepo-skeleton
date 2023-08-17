@@ -78,7 +78,7 @@ services:
 
   shared_rabbitmq:
     container_name: cooldevguys-skeleton-shared_rabbitmq
-    image: 'rabbitmq:3.7-management'
+    image: 'rabbitmq:3.10-management'
     restart: unless-stopped
     ports:
       - "5630:5672"

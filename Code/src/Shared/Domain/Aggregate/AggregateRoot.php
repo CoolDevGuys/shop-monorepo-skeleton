@@ -23,7 +23,7 @@ abstract class AggregateRoot
         $this->domainEvents[] = $domainEvent;
     }
 
-    abstract public function toJsonApiResponseArray(string $baseUrl): array;
-
     abstract public function toArray(): array;
+
+    abstract public function entityType(): string;
 }

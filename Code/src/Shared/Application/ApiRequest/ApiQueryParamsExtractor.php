@@ -9,7 +9,7 @@ use CoolDevGuys\Shared\Domain\ValueObject\CursorQueryParam;
 use CoolDevGuys\Shared\Domain\ValueObject\FiltersQueryParam;
 use CoolDevGuys\Shared\Domain\ValueObject\LimitQueryParam;
 use CoolDevGuys\Shared\Domain\ValueObject\SearchableQueryParam;
-use CoolDevGuys\Shared\Domain\ValueObject\SortQueryParam;
+use CoolDevGuys\Shared\Domain\ValueObject\AbstractSortQueryParam;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class ApiQueryParamsExtractor
@@ -48,7 +48,7 @@ abstract class ApiQueryParamsExtractor
         return new LimitQueryParam(self::DEFAULT_LIMIT);
     }
 
-    abstract protected static function extractSort(Request $request): ?SortQueryParam;
+    abstract protected static function extractSort(Request $request): ?AbstractSortQueryParam;
 
     abstract protected static function extractFilters(Request $request): ?FiltersQueryParam;
 

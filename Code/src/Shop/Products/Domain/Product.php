@@ -7,6 +7,7 @@ namespace CoolDevGuys\Shop\Products\Domain;
 use CoolDevGuys\Shared\Domain\Aggregate\AggregateRoot;
 use CoolDevGuys\Shared\Domain\ValueObject\DateValueObject;
 use CoolDevGuys\Shop\Products\Domain\ValueObject\ProductName;
+use CoolDevGuys\Shop\Shared\Domain\Manufacturers\ManufacturerId;
 use CoolDevGuys\Shop\Shared\Domain\Products\ProductId;
 
 final class Product extends AggregateRoot
@@ -16,7 +17,9 @@ final class Product extends AggregateRoot
     private DateValueObject $createdAt;
     private ?DateValueObject $updatedAt;
 
-    public function __construct(private ProductId $id, private ProductName $name, private ProductPrice $price)
+    public function __construct(private ProductId      $id, private ProductName $name, private ProductPrice $price,
+                                private ManufacturerId $manufacturerId, private ProductMetadata $metadata
+    )
     {
         $this->createdAt = DateValueObject::now();
         $this->updatedAt = null;
@@ -36,6 +39,10 @@ final class Product extends AggregateRoot
     {
         return $this->price;
     }
+    public function manufacturerId(): ManufacturerId
+    {
+        return $this->manufacturerId;
+    }
 
     public function update(ProductData $productData): void
     {
@@ -53,20 +60,23 @@ final class Product extends AggregateRoot
         }
     }
 
-    public function toJsonApiResponseArray(string $baseUrl): array
-    {
-        $attr = $this->toArray();
-        unset($attr['id']);
-        return [
-            'id' => $this->id->value(),
-            'type' => self::ENTITY_TYPE,
-            'attributes' => $attr,
-            'links' => ['self' => $baseUrl . '/' . $this->id->value()]
-        ];
-    }
-
     public function toArray(): array
     {
         return ['id' => $this->id->value(), 'name' => $this->name->value(), 'price' => $this->price->value()];
+    }
+
+    public function metadata(): ProductMetadata
+    {
+        return $this->metadata;
+    }
+
+    public function addMetadata(ProductMetadata $metadata): void
+    {
+        $this->metadata = $metadata;
+    }
+
+    public function entityType(): string
+    {
+        return self::ENTITY_TYPE;
     }
 }

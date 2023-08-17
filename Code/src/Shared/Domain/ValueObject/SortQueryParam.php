@@ -4,53 +4,25 @@ declare(strict_types=1);
 
 namespace CoolDevGuys\Shared\Domain\ValueObject;
 
-use CoolDevGuys\Shared\Domain\Errors\InvalidSortQueryParamError;
-use CoolDevGuys\Shared\Domain\ValueObject;
-
-abstract class SortQueryParam implements ValueObject
+final class SortQueryParam extends AbstractSortQueryParam
 {
-    private const ASC        = 'asc';
-    private const DESC       = 'desc';
-    public const  SORT_LABEL = 'sort';
 
-    private string $value;
-    private string $order;
-
-    public function __construct(string $value)
+    public static function fromString(string $value): AbstractSortQueryParam
     {
-        [$cleanedValue, $this->order] = $this->decomposeSortValue($value);
-
-        $this->guard($cleanedValue);
-
-        $this->value = $this->supportedSortValuesMapping()[$cleanedValue];
+        [$value, $order] = self::decomposeSortValue($value);
     }
 
-    private function guard(string $value): void
+    public function getSupportedSortAttributes(): array
     {
-        if (!array_key_exists($value, $this->supportedSortValuesMapping())) {
-            throw new InvalidSortQueryParamError($value);
-        }
-    }
-
-    public function value(): string
-    {
-        return $this->value;
-    }
-
-    public function order(): string
-    {
-        return $this->order;
+        // TODO: Implement getSupportedSortAttributes() method.
     }
 
     public function __toString(): string
     {
-        $inverseMapping = array_flip($this->supportedSortValuesMapping());
-        $value          = $inverseMapping[$this->value] . $this->order === self::DESC ? '-' : '';
-
-        return self::SORT_LABEL . '=' . urldecode($value);
+        // TODO: Implement __toString() method.
     }
 
-    private function decomposeSortValue(string $value): array
+    private static function decomposeSortValue(string $value): array
     {
         $firstCharacter = $value[0];
 
@@ -61,14 +33,14 @@ abstract class SortQueryParam implements ValueObject
         return [$cleanedSortLabel, $order];
     }
 
-    private function getOrder(string $firstCharacter): string
+    protected function getOrder(string $firstCharacter): string
     {
         return $firstCharacter === '-'
             ? self::DESC
             : self::ASC;
     }
 
-    private function getCleanedSortLabel(string $firstCharacter, string $value): string
+    protected function getCleanedSortLabel(string $firstCharacter, string $value): string
     {
         // if the $firstCharacter starts with '-' or '+', return $value without the sign
         // else (when no sign) return directly the $value
@@ -76,6 +48,4 @@ abstract class SortQueryParam implements ValueObject
             ? substr($value, 1)
             : $value;
     }
-
-    abstract protected function supportedSortValuesMapping(): array;
 }

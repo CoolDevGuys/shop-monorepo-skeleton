@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CoolDevGuys\Shared\Domain\Criteria;
 
 use CoolDevGuys\Shared\Domain\Collection;
+use function Lambdish\Phunctional\map;
 use function Lambdish\Phunctional\reduce;
 
 final class Filters extends Collection
@@ -41,5 +42,10 @@ final class Filters extends Collection
     protected function type(): string
     {
         return Filter::class;
+    }
+
+    public function toArray(): array
+    {
+        return map(fn(Filter $filter) => $filter->serialize(), $this->items());
     }
 }

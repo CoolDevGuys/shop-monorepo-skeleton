@@ -24,7 +24,7 @@ final class ProductsGetController extends ApiController
 
         $baseUrl = $request->getPathInfo();
 
-        return SuccessfulJsonApiResponse::forPaginatedCollection($productsPaginated, $queryParams, $baseUrl);
+        return SuccessfulJsonApiResponse::ok($productsPaginated, $queryParams, $baseUrl);
     }
 
     protected function exceptions(): array

@@ -8,7 +8,7 @@ final class ApiQueryParams
 {
     private CursorQueryParam $cursor;
     private LimitQueryParam $limit;
-    private ?SortQueryParam $sort;
+    private ?AbstractSortQueryParam $sort;
     private ?FiltersQueryParam $filters;
     private ?SearchableQueryParam $searchables;
     private ?CursorQueryParam $nextCursor;
@@ -17,7 +17,7 @@ final class ApiQueryParams
     public function __construct(
         CursorQueryParam $cursor,
         LimitQueryParam $limit,
-        ?SortQueryParam $sortQueryParam = null,
+        ?AbstractSortQueryParam $sortQueryParam = null,
         ?FiltersQueryParam $filters = null,
         ?SearchableQueryParam $search = null,
         ?CursorQueryParam $nextCursor = null,
@@ -42,7 +42,7 @@ final class ApiQueryParams
         return $this->limit;
     }
 
-    public function sort(): ?SortQueryParam
+    public function sort(): ?AbstractSortQueryParam
     {
         return $this->sort;
     }
@@ -105,7 +105,7 @@ final class ApiQueryParams
         ?SearchableQueryParam $searchable,
         ?CursorQueryParam $cursor,
         LimitQueryParam $limit,
-        ?SortQueryParam $sort
+        ?AbstractSortQueryParam $sort
     ): string {
         $queryParams = $filters !== null ? '?'.$filters->__toString() : '';
         $queryParams .= $searchable !== null ? (empty($queryParams) ? '?' : '&') . $searchable->__toString() : '';

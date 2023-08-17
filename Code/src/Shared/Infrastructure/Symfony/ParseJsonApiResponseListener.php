@@ -13,15 +13,13 @@ final class ParseJsonApiResponseListener
     public function onKernelView(ViewEvent $event): void
     {
         $controllerResult = $event->getControllerResult();
-        if (!$controllerResult instanceof JsonApiResponse) {
-            return;
+        if ($controllerResult instanceof JsonApiResponse) {
+            $event->setResponse(
+                new JsonResponse(
+                    $controllerResult->toArray(),
+                    $controllerResult->statusCode()
+                )
+            );
         }
-
-        $event->setResponse(
-            new JsonResponse(
-                $controllerResult->toArray(),
-                $controllerResult->statusCode()
-            )
-        );
     }
 }
